@@ -17,9 +17,9 @@ classdef xArm7 < handle
         end
         
         function getXArm7(self)
-           L(1) = Link('offset', 0, 'd', 0.267, 'a', 0, 'alpha', -pi/2, 'qlim', [-2*pi, 2*pi]);
+           L(1) = Link('offset', pi, 'd', 0.267, 'a', 0, 'alpha', -pi/2, 'qlim', [-2*pi, 2*pi]);
            L(2) = Link('offset', 0, 'd', 0, 'a', 0, 'alpha', pi/2, 'qlim', [-2.0769, 2.0769]);
-           L(3) = Link('offset', 0, 'd', 0.293, 'a', 0.0525, 'alpha', pi/2, 'qlim', [-2*pi, 2*pi]);
+           L(3) = Link('offset', pi, 'd', 0.293, 'a', 0.0525, 'alpha', pi/2, 'qlim', [-2*pi, 2*pi]);
            L(4) = Link('offset', 0, 'd', 0, 'a', 0.0775, 'alpha', pi/2, 'qlim', [-0.1920, 3.9270]);
            L(5) = Link('offset', pi, 'd', 0.3425, 'a', 0, 'alpha', pi/2, 'qlim', [-2*pi, 2*pi]);
            L(6) = Link('offset', 0, 'd', 0, 'a', -0.076, 'alpha', -pi/2, 'qlim', [-1.6930, pi]);
