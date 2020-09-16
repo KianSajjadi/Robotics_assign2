@@ -5,6 +5,7 @@ classdef xArm7 < handle
         workspace = [-2 2 -2 2 -0.3 2]; 
         base;
         stopState;
+        %maximumReachAndVolume;
     end
     %% Methods
     methods
@@ -15,6 +16,10 @@ classdef xArm7 < handle
             self.base = base;
             self.getXArm7();
             self.modelRobot();
+            %figure(2)
+            %initJointAngles = [0, 0, 0, 0, 0, pi/2, pi/2];
+            %self.model.plot3d(initJointAngles);
+            %self.maximumReachAndVolume = self.getMaximumReachAndVolume();
         end
         
         function getXArm7(self)
@@ -23,7 +28,7 @@ classdef xArm7 < handle
            L(3) = Link('offset', pi, 'd', 0.293, 'a', 0.0525, 'alpha', pi/2, 'qlim', [-2*pi, 2*pi]);
            L(4) = Link('offset', 0, 'd', 0, 'a', 0.0775, 'alpha', pi/2, 'qlim', [-0.1920, 3.9270]);
            L(5) = Link('offset', pi, 'd', 0.3425, 'a', 0, 'alpha', pi/2, 'qlim', [-2*pi, 2*pi]);
-           L(6) = Link('offset', 0, 'd', 0, 'a', -0.076, 'alpha', -pi/2, 'qlim', [-1.6930, pi]);
+           L(6) = Link('offset', 0, 'd', 0, 'a', -0.076, 'alpha', -pi/2, 'qlim', [-1.6930, 1.8151]);
            L(7) = Link('offset', 0, 'd', 0.097 + 0.163 - 0.02, 'a', 0, 'alpha', 0, 'qlim', [-2*pi, 2*pi]);
            
            self.model = SerialLink(L, 'name', 'xArm7', 'base', self.base); 
