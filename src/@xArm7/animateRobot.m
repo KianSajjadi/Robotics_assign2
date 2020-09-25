@@ -3,7 +3,7 @@
 %   Robot: a given robot
 %   qMatrix: a matrix(for the xArm7) of n x 7 (where n = numSteps) which is
 %   a list of all the joint angles between two end effector positions
-%Description: 
+% Description: 
 %   this function animates the robot by iterating through the qMatrix and
 %   individually animating each 
 
