@@ -16,7 +16,7 @@ function poseQMatrix = getPoseQMatrix(currentJoints, goalJoints, numSteps)
     poseQMatrix = nan(numSteps, 7);
     for i = 1 : numSteps
         poseQMatrix(i, :) = currentJoints + s(i) * (goalJoints - currentJoints);
-    end
+    end 
     
 end
 
