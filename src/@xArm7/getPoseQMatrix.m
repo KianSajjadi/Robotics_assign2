@@ -1,4 +1,4 @@
-%% poseQMatrix = getPoseQMatrix(currentJoints, goalJionts, numSteps)
+%% poseQMatrix = getPoseQMatrix(currentJoints, goalJoints, numSteps)
 %Args:
 %   currentJoints: the current joints of the robot
 %   goalJoints: the goal joints of the robot
@@ -11,7 +11,7 @@
 %   number of steps to calculate the qMatrix using the trapezoidal velocity
 %   profile
 
-function poseQMatrix = getPoseQMatrix(currentJoints, goalJoints, numSteps)
+function poseQMatrix = getPoseQMatrix(~, currentJoints, goalJoints, numSteps)
     s = lspb(0, 1, numSteps);
     poseQMatrix = nan(numSteps, 7);
     for i = 1 : numSteps
