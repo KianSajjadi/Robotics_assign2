@@ -15,8 +15,10 @@ function translationMatrix = getTranslationMatrix(~, currentTransform, goalTrans
     translationMatrix = nan(numSteps, 6);
     currentTranslation = transl(currentTransform);
     goalTranslation = transl(goalTransform);
+    currentRPY = tr2rpy(currentTransform);
+    goalRPY = tr2rpy(goalTransform);
     for i = 1:numSteps
         translationMatrix(i, 1:3) = currentTranslation + s(i) * (goalTranslation - currentTranslation);
-        translationMatrix(i, 4:6) =  [0, 0, 0];
+        translationMatrix(i, 4:6) =  currentRPY + s(i) * (goalRPY - currentRPY);
     end
 end

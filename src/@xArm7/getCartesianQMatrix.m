@@ -1,8 +1,7 @@
-%% cartesianQMatrix = getCartesianQMatrix(currentJoints, transformMatrix, numSteps)
+%% cartesianQMatrix = getCartesianQMatrix(currentTransform, transformMatrix, numSteps)
 %Args:
 %   robot: a given robot (in this case xArm7)
-%   currentJoints: the current joints of the robot, which can be found with
-%       inverse kinematics
+%   currentTransform: the current transform of the robot's end effector
 %   transformMatrix
 %   numSteps: the number of steps between movements
 %Output:

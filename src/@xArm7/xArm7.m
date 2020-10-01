@@ -5,6 +5,8 @@ classdef xArm7 < handle
         workspace = [-2 2 -2 2 -0.3 2]; 
         base;
         stopState;
+        isHolding;
+        heldProp;
         %maximumReachAndVolume;
     end
     %% Methods
