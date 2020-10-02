@@ -21,18 +21,20 @@ classdef Workbench < handle
             testBlock1 = Prop(testBlockTransform, 'testBlock');
             testBlock2 = Prop(testBlockTransform, 'testBlock');
             testBlock1.initProp;
-            initJointAngles = 
-            robot.model.getpos()
+            initJointAngles = [0, 0, 0, 0, 0, 0, pi/2];
+            robot.model.animate(initJointAngles);
+            robot.model.getpos();
             initTransform = robot.model.fkine(robot.model.getpos());
             preCalcData(1, :) = {initTransform, nan, nan, nan, nan, nan};
             %First Step, move robot arm to near the block1
             step1Transform = initTransform * transl(0, 0, -0.3);
             preCalcData(2, :) = {step1Transform, 'cartesian', nan, nan, nan, nan};
             %SecondStep move robot arm to block
-            %step2Transform =  step1Transform * transl(0.4, 0.1, 0.3) * trotx(pi) * trotz(pi/2);
-            %preCalcData(3, :) = {step2Transform, 'joint', nan, nan, nan, nan};
+            step2Transform =  step1Transform * transl(0, 0.2, -0.3);
+            preCalcData(3, :) = {step2Transform, 'cartesian', nan, nan, nan, nan};
             %process the pre calculated data
             renderDataList = self.processData(robot, preCalcData);
+            
         end
         
         function renderDataList = processData(~, robot, preCalcData)
@@ -45,7 +47,13 @@ classdef Workbench < handle
                   case 'cartesian'
                       currentTransform = preCalcData{i - 1, 1};
                       goalTransform = preCalcData{i, 1};
-                      qMatrix = robot.getCartesianQMatrix(currentTransform, goalTransform, numSteps);
+                      if i == 2
+                         currentJoints = robot.model.getpos(); 
+                      else
+                         qMatrix = renderDataList{i - 2, 1};
+                         currentJoints = qMatrix(50, :);
+                      end
+                      qMatrix = robot.getCartesianQMatrix(currentTransform, currentJoints, goalTransform, numSteps);
                       renderDataList(i - 1, :) = {qMatrix, preCalcData{i, 3:6}};
                   
                   case 'joint'

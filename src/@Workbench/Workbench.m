@@ -11,11 +11,9 @@ classdef Workbench < handle
             self.renderDataList = self.getRenderDataList(robot);
             self.animateScene(robot, self.renderDataList);
         end
-        %this function populates the pre calculated data for the robot in
-        %form: preCalcData = {transform, cartesianOrJoint, isHolding, heldProp, renderProp,
-        %                     newProp}
+        %% getRenderDataList
         function renderDataList = getRenderDataList(self, robot)
-            %create all props
+            %% create all props and initialise project
             blockOffset = 0.05;
             testBlockTransform = transl(0.4, 0, 0.15 + blockOffset);
             testBlock1 = Prop(testBlockTransform, 'testBlock');
@@ -26,16 +24,22 @@ classdef Workbench < handle
             robot.model.getpos();
             initTransform = robot.model.fkine(robot.model.getpos());
             preCalcData(1, :) = {initTransform, nan, nan, nan, nan, nan};
-            %First Step, move robot arm to near the block1
+            %% Step: 1
             step1Transform = initTransform * transl(0, 0, -0.3);
             preCalcData(2, :) = {step1Transform, 'cartesian', nan, nan, nan, nan};
-            %SecondStep move robot arm to block
+            %% Step: 2
             step2Transform =  step1Transform * transl(0, 0.2, -0.3);
             preCalcData(3, :) = {step2Transform, 'cartesian', nan, nan, nan, nan};
-            %process the pre calculated data
+            %% Step: 3
+            step3Transform = step2Transform * transl(0, -0.2, 0.3);
+            preCalcData(4, :) = {step3Transform, 'cartesian', nan, nan, nan, nan};
+            %% Step: 4
+            step4Transform = step3Transform * transl(0, 0.2, 0);
+            preCalcData(5, :) = {step4Transform, 'joint', nan, nan, nan, nan};
+            %% process the pre calculated data
             renderDataList = self.processData(robot, preCalcData);
         end
-        
+        %% processData
         function renderDataList = processData(~, robot, preCalcData)
            numSteps = 50;
            sizeMtx = size(preCalcData);
@@ -46,11 +50,22 @@ classdef Workbench < handle
                   case 'cartesian'
                       currentTransform = preCalcData{i - 1, 1};
                       goalTransform = preCalcData{i, 1};
-                      qMatrix = robot.getCartesianQMatrix(currentTransform, goalTransform, numSteps);
+                      if i == 2
+                         currentJoints = robot.model.getpos(); 
+                      else
+                         qMatrix = renderDataList{i - 2, 1};
+                         currentJoints = qMatrix(numSteps, :);
+                      end
+                      qMatrix = robot.getCartesianQMatrix(currentTransform, currentJoints, goalTransform, numSteps);
                       renderDataList(i - 1, :) = {qMatrix, preCalcData{i, 3:6}};
                   
                   case 'joint'
-                      currentJoints = robot.model.getpos();
+                      if i == 2
+                        currentJoints = robot.model.getpos();
+                      else
+                          qMatrix = renderDataList{i - 2, 1};
+                          currentJoints = qMatrix(numSteps, :);
+                      end
                       goalTransform = preCalcData{i, 1};
                       qMatrix = robot.getJointQMatrix(currentJoints, goalTransform, numSteps);
                       renderDataList(i - 1, :) = {qMatrix, preCalcData{i, 3:6}};
