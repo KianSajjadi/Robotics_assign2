@@ -8,6 +8,7 @@ classdef Prop < handle
 		prop_h;
         positionTransform;
         propName;
+        endEffectorToPropTransform;
     end
     %% Methods
     methods

@@ -32,7 +32,7 @@ function animatePropAndRobot(robot, renderData)
         currentJointValues = qMatrix(j, :);
         robot.model.animate(currentJointValues);
         if isHoldingBool == 1
-            newPosition = robot.model.fkine(currentJointValues);
+            newPosition = robot.model.fkine(currentJointValues) * heldProp.endEffectorToPropTransform;
             heldProp.updatePosition(newPosition);
         end
 
