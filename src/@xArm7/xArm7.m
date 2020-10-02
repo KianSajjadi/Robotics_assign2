@@ -19,8 +19,8 @@ classdef xArm7 < handle
             self.getXArm7();
             self.modelRobot();
             %figure(2)
-            %initJointAngles = [0, 0, 0, 0, 0, pi/2, pi/2];
-            %self.model.plot3d(initJointAngles);
+            %initJointAngles = [0, 0, 0, 0, 0, 0, 0];
+            %self.model.plot(initJointAngles);
             %self.maximumReachAndVolume = self.getMaximumReachAndVolume();
         end
         

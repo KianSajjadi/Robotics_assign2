@@ -18,12 +18,12 @@ function cartesianQMatrix = getCartesianQMatrix(robot, currentTransform, goalTra
     currentJoints = robot.model.getpos();
     translationMatrix = robot.getTranslationMatrix(currentTransform, goalTransform, numSteps);
     cartesianQMatrix(1, :) = currentJoints;
-    for i = 1 : numSteps - 1
-        currentEndEffectorVelocity = (translationMatrix(i + 1, :) - translationMatrix(i, :))/deltaT;
+    for i = 1 : numSteps
+        currentEndEffectorVelocity = (translationMatrix(i + 1, :) - translationMatrix(i, :)) / deltaT;
         currentJacobian = robot.model.jacob0(cartesianQMatrix(i, :));
         currentJointVelocity = pinv(currentJacobian) * currentEndEffectorVelocity'; %RMRC
         cartesianQMatrix(i + 1, :) = cartesianQMatrix(i, :) + deltaT * currentJointVelocity'; %update next joint state
     end
-        
+
 end
 
