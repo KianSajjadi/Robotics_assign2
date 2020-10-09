@@ -7,6 +7,7 @@ classdef xArm7 < handle
         stopState;
         isHolding;
         heldProp;
+        hitBoxes;
         %maximumReachAndVolume;
     end
     %% Methods
