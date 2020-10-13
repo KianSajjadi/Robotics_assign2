@@ -29,21 +29,21 @@ classdef Hitbox
         function faces = getFaces(~)
             faces = [
                 1, 2, 3; 1, 4, 3;
-                1, 4, 5; 4, 5, 8;
-                4, 3, 8; 3, 7, 8;
-                3, 7, 6; 2, 3, 6;
-                1, 2, 6; 1, 5, 6;
-                5, 7, 8; 5, 6, 7
+                1, 5, 6; 1, 2, 6;
+                2, 6, 7; 2, 3, 7;
+                8, 3, 7; 8, 4, 3;
+                4, 1, 5; 4, 8 ,5;
+                5, 6, 7; 5, 8, 7;
             ];
         end
         
         function faceNormals = getFaceNormals(~, vertices, faces)               
-            faceNormals = zeros(size(face,1),3);
-            for faceIndex = 1:size(face,1)
-                v1 = vertices(faces(faceIndex,1)',:);
-                v2 = vertices(faces(faceIndex,2)',:);
-                v3 = vertices(faces(faceIndex,3)',:);
-                faceNormals(faceIndex,:) = unit(cross(v2-v1,v3-v1));
+            faceNormals = zeros(size(face, 1), 3);
+            for faceIndex = 1 : size(face,1)
+                v1 = vertices(faces(faceIndex, 1)', :);
+                v2 = vertices(faces(faceIndex, 2)', :);
+                v3 = vertices(faces(faceIndex, 3)', :);
+                faceNormals(faceIndex, :) = unit(cross(v2 - v1, v3 - v1));
             end 
         end
         
@@ -56,9 +56,9 @@ classdef Hitbox
                 ];
             hold on
             for i=1:size(edges,1)
-                plot3([vertices(edges(i,1),1),vertices(edges(i,2),1)],...
-                [vertices(edges(i,1),2),vertices(edges(i,2),2)],...
-                [vertices(edges(i,1),3),vertices(edges(i,2),3)],'k')
+                plot3([vertices(edges(i, 1), 1), vertices(edges(i, 2), 1)],...
+                [vertices(edges(i, 1), 2), vertices(edges(i, 2), 2)],...
+                [vertices(edges(i,1) , 3), vertices(edges(i, 2), 3)], 'k')
             end
             hold off
         end
