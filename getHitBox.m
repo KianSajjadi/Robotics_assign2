@@ -18,5 +18,6 @@
 %   position on robotic arms.
 
 function hitBox = getHixBox(firstPointTransform, secondPointTransform, width, length, xDisplacement, yDisplacement, zDisplacement)
-    
-end
+    height = norm(transl(firstPointTransform) - transl(secondPointTransform));
+    rectangularPrism = 
+end 
