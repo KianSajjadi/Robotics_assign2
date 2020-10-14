@@ -7,23 +7,24 @@ classdef Hitbox
     end
     
     methods
-        function self = Hitbox(height, width, length, initialTransform)
-            self.vertices = self.getVertices(height, width, length, initialTransform);
-            self.faces = self.getFaces(vertices);
-            self.faceNormals = self.getFaceNormals(vertices, faces);
+        function self = Hitbox(height, width, length, displacement, initialTransform)
+            self.vertices = self.getVertices(height, width, length, displacement, initialTransform);
+            self.faces = self.getFaces();
+           % self.faceNormals = self.getFaceNormals(self.vertices, self.faces);
         end
         
-        function vertices = getVertices(~, height, width, length, initialTransform)
+        function vertices = getVertices(~, height, width, length, displacement, initialTransform)
             bottomCentrePoint = [0, 0, -height];
             topCentrePoint = [0, 0, 0];
-            vertices(1, :) = [width/2, length/2, 0];
-            vertices(2, :) = [width/2, -length/2, 0];
-            vertices(3, :) = [-width/2, -length/2, 0];
-            vertices(4, :) = [-width/2, length/2, 0];
-            vertices(5, :) = [width/2, length/2, -height];
-            vertices(6, :) = [width/2, -length/2, -height];
-            vertices(7, :) = [-width/2, -length/2, -height];
-            vertices(8, :) = [-width/2, length/2, -height]; 
+            initialVector = transl(initialTransform);
+            vertices(1, :) = [width / 2 + initialVector(1, 1) + displacement(1, 1), length / 2 + initialVector(2, 1) + displacement(2, 1), 0 + initialVector(3, 1) + displacement(3, 1)];
+            vertices(2, :) = [width / 2 + initialVector(1, 1) + displacement(1, 1), -length / 2 + initialVector(2, 1) + displacement(2, 1), 0 + initialVector(3, 1) + displacement(3, 1)];
+            vertices(3, :) = [-width / 2 + initialVector(1, 1) + displacement(1, 1), -length / 2 + initialVector(2, 1) + displacement(2, 1), 0 + initialVector(3, 1) + displacement(3, 1)];
+            vertices(4, :) = [-width / 2 + initialVector(1, 1) + displacement(1, 1), length / 2 + initialVector(2, 1) + displacement(2, 1), 0 + initialVector(3, 1) + displacement(3, 1)];
+            vertices(5, :) = [width / 2 + initialVector(1, 1) + displacement(1, 1), length / 2 + initialVector(2, 1) + displacement(2, 1), height + initialVector(3, 1) + displacement(3, 1)];
+            vertices(6, :) = [width / 2 + initialVector(1, 1) + displacement(1, 1), -length / 2 + initialVector(2, 1) + displacement(2, 1), height + initialVector(3, 1) + displacement(3, 1)];
+            vertices(7, :) = [-width / 2 + initialVector(1, 1) + displacement(1, 1), -length / 2 + initialVector(2, 1) + displacement(2, 1), height + initialVector(3, 1) + displacement(3, 1)];
+            vertices(8, :) = [-width / 2 + initialVector(1, 1) + displacement(1, 1), length / 2 + initialVector(2, 1) + displacement(2, 1), height + initialVector(3, 1) + displacement(3, 1)]; 
         end
         
         function faces = getFaces(~)
@@ -47,7 +48,7 @@ classdef Hitbox
             end 
         end
         
-        function plotEdges(~, vertices)
+        function plotEdges(self)
             edges = [
                 1, 2; 1, 4; 1, 3; 3, 4; 3, 2;
                 5, 6; 5, 8; 5, 7; 7, 8; 7, 6;
@@ -56,16 +57,16 @@ classdef Hitbox
                 ];
             hold on
             for i=1:size(edges,1)
-                plot3([vertices(edges(i, 1), 1), vertices(edges(i, 2), 1)],...
-                [vertices(edges(i, 1), 2), vertices(edges(i, 2), 2)],...
-                [vertices(edges(i,1) , 3), vertices(edges(i, 2), 3)], 'k')
+                plot3([self.vertices(edges(i, 1), 1), self.vertices(edges(i, 2), 1)],...
+                [self.vertices(edges(i, 1), 2), self.vertices(edges(i, 2), 2)],...
+                [self.vertices(edges(i,1) , 3), self.vertices(edges(i, 2), 3)], 'k')
             end
             hold off
         end
         
-        function updatePosition(~, vertices)
+        function updatePosition(self, goalTransform)
             for i = 1:8
-                vertices(i, :) = transl(goalTransform * transl(vertices(i, :)))';
+                self.vertices(i, :) = transl(goalTransform * transl(self.vertices(i, :)))';
             end
         end
     end
