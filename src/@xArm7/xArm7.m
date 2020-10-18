@@ -2,7 +2,7 @@ classdef xArm7 < handle
     %% Properties
     properties
         model;
-        workspace = [-2 2 -2 2 -0.3 2]; 
+        workspace = [-2 2 -2 2 -0.8 2]; 
         base;
         stopState;
         isHolding;
