@@ -9,9 +9,9 @@ classdef Workbench < handle
     %% Methods
     methods
         function self = Workbench(robot)
+            self.robotHitboxList = robot.getRobotHitboxList();
             self.renderDataList = self.getRenderDataList(robot);
             self.animateScene(robot, self.renderDataList);
-            robotHitboxList = robot.getRobotHitboxList();
         end
         %% getRenderDataList
         function renderDataList = getRenderDataList(self, robot)
@@ -43,43 +43,50 @@ classdef Workbench < handle
             step5Transform = step4Transform * transl(0, 0, -0.4);
             preCalcData(6, :) = {step5Transform, 'cartesian', 1, testBlock1, nan, nan};
             %% process the pre calculated data
-            renderDataList = self.processData(robot, preCalcData);
+            renderDataList = self.processData(robot, preCalcData, self.robotHitboxList);
             
         end
         %% processData
-        function renderDataList = processData(~, robot, preCalcData)
-           numSteps = 50;
-           sizeMtx = size(preCalcData);
-           n = sizeMtx(1);
-           renderDataList = cell(n - 1, 5);
-           for i = 2:n
-              switch preCalcData{i, 2}
-                  case 'cartesian'
-                      currentTransform = preCalcData{i - 1, 1};
-                      goalTransform = preCalcData{i, 1};
-                      if i == 2
-                         currentJoints = robot.model.getpos(); 
-                      else
-                         qMatrix = renderDataList{i - 2, 1};
-                         currentJoints = qMatrix(numSteps, :);
-                      end
-                      qMatrix = robot.getCartesianQMatrix(currentTransform, currentJoints, goalTransform, numSteps);
-                      renderDataList(i - 1, :) = {qMatrix, preCalcData{i, 3:6}};
-                  
-                  case 'joint'
-                      if i == 2
-                        currentJoints = robot.model.getpos();
-                      else
-                          qMatrix = renderDataList{i - 2, 1};
-                          currentJoints = qMatrix(numSteps, :);
-                      end
-                      goalTransform = preCalcData{i, 1};
-                      qMatrix = robot.getJointQMatrix(currentJoints, goalTransform, numSteps);
-                      renderDataList(i - 1, :) = {qMatrix, preCalcData{i, 3:6}};
-              end
-           end
+        function renderDataList = processData(self, robot, preCalcData, robotHitboxList)
+            numSteps = 150;
+            sizeMtx = size(preCalcData);
+            n = sizeMtx(1);
+            renderDataList = cell(n - 1, 5);
+            for i = 2:n
+                switch preCalcData{i, 2}
+                    case 'cartesian'
+                        currentTransform = preCalcData{i - 1, 1};
+                        goalTransform = preCalcData{i, 1};
+                        if i == 2
+                            currentJoints = robot.model.getpos();
+                        else
+                            qMatrix = renderDataList{i - 2, 1};
+                            currentJoints = qMatrix(numSteps, :);
+                        end
+                        qMatrix = robot.getCartesianQMatrix(currentTransform, currentJoints, goalTransform, numSteps);
+                        renderDataList(i - 1, :) = {qMatrix, preCalcData{i, 3:6}};
+                        
+                    case 'joint'
+                        if i == 2
+                            currentJoints = robot.model.getpos();
+                        else
+                            qMatrix = renderDataList{i - 2, 1};
+                            currentJoints = qMatrix(numSteps, :);
+                        end
+                        goalTransform = preCalcData{i, 1};
+                        qMatrix = robot.getJointQMatrix(currentJoints, goalTransform, numSteps);
+                        renderDataList(i - 1, :) = {qMatrix, preCalcData{i, 3:6}};
+                end
+                for j = 1:8
+                    fkineJoints = robot.getFkineJoints(qMatrix(j, :));
+                    hitbox = robotHitboxList{j, 1};
+                    hitbox.updatePosition(fkineJoints{j, 1});
+                end
+            end
         end
-
+        
     end
     
 end
+
+

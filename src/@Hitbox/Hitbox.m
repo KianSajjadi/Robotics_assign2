@@ -56,7 +56,7 @@ classdef Hitbox
                 6, 1; 5, 1; 5, 4
                 ];
             hold on
-            for i=1:size(edges,1)
+            for i = 1 : size(edges, 1)
                 plot3([self.vertices(edges(i, 1), 1), self.vertices(edges(i, 2), 1)],...
                 [self.vertices(edges(i, 1), 2), self.vertices(edges(i, 2), 2)],...
                 [self.vertices(edges(i,1) , 3), self.vertices(edges(i, 2), 3)], 'k')
@@ -66,8 +66,10 @@ classdef Hitbox
         
         function updatePosition(self, goalTransform)
             for i = 1:8
-                self.vertices(i, :) = transl(goalTransform * transl(self.vertices(i, :)))';
+                vertices = self.vertices;
+                transformedVertices(i, :) = transl(goalTransform * transl(vertices(i, :)))';
             end
+            self.vertices = transformedVertices;
         end
     end
     
