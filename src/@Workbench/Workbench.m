@@ -3,6 +3,7 @@ classdef Workbench < handle
     properties
         robot;
         renderDataList;
+        robotHitboxList;
     end
     
     %% Methods
@@ -10,6 +11,7 @@ classdef Workbench < handle
         function self = Workbench(robot)
             self.renderDataList = self.getRenderDataList(robot);
             self.animateScene(robot, self.renderDataList);
+            robotHitboxList = robot.getRobotHitboxList();
         end
         %% getRenderDataList
         function renderDataList = getRenderDataList(self, robot)
