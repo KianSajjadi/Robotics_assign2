@@ -17,14 +17,22 @@ classdef Hitbox
             bottomCentrePoint = [0, 0, -height];
             topCentrePoint = [0, 0, 0];
             initialVector = transl(initialTransform);
-            vertices(1, :) = [width / 2 + initialVector(1, 1) + displacement(1, 1), length / 2 + initialVector(2, 1) + displacement(2, 1), 0 + initialVector(3, 1) + displacement(3, 1)];
-            vertices(2, :) = [width / 2 + initialVector(1, 1) + displacement(1, 1), -length / 2 + initialVector(2, 1) + displacement(2, 1), 0 + initialVector(3, 1) + displacement(3, 1)];
-            vertices(3, :) = [-width / 2 + initialVector(1, 1) + displacement(1, 1), -length / 2 + initialVector(2, 1) + displacement(2, 1), 0 + initialVector(3, 1) + displacement(3, 1)];
-            vertices(4, :) = [-width / 2 + initialVector(1, 1) + displacement(1, 1), length / 2 + initialVector(2, 1) + displacement(2, 1), 0 + initialVector(3, 1) + displacement(3, 1)];
-            vertices(5, :) = [width / 2 + initialVector(1, 1) + displacement(1, 1), length / 2 + initialVector(2, 1) + displacement(2, 1), height + initialVector(3, 1) + displacement(3, 1)];
-            vertices(6, :) = [width / 2 + initialVector(1, 1) + displacement(1, 1), -length / 2 + initialVector(2, 1) + displacement(2, 1), height + initialVector(3, 1) + displacement(3, 1)];
-            vertices(7, :) = [-width / 2 + initialVector(1, 1) + displacement(1, 1), -length / 2 + initialVector(2, 1) + displacement(2, 1), height + initialVector(3, 1) + displacement(3, 1)];
-            vertices(8, :) = [-width / 2 + initialVector(1, 1) + displacement(1, 1), length / 2 + initialVector(2, 1) + displacement(2, 1), height + initialVector(3, 1) + displacement(3, 1)]; 
+            vertices(1, :) = transl(transl(width / 2  + displacement(1, 1), length / 2 + displacement(2, 1), 0  + displacement(3, 1)) * initialTransform);
+            vertices(2, :) = transl(transl(width / 2  + displacement(1, 1), -length / 2 + displacement(2, 1), 0  + displacement(3, 1)) * initialTransform);
+            vertices(3, :) = transl(transl(-width / 2  + displacement(1, 1), -length / 2 + displacement(2, 1), 0  + displacement(3, 1)) * initialTransform);
+            vertices(4, :) = transl(transl(-width / 2  + displacement(1, 1), length / 2 + displacement(2, 1), 0  + displacement(3, 1)) * initialTransform);
+            vertices(5, :) = transl(transl(width / 2  + displacement(1, 1), length / 2 + displacement(2, 1), height  + displacement(3, 1)) * initialTransform);
+            vertices(6, :) = transl(transl(width / 2  + displacement(1, 1), -length / 2 + displacement(2, 1), height  + displacement(3, 1)) * initialTransform);
+            vertices(7, :) = transl(transl(-width / 2  + displacement(1, 1), -length / 2 + displacement(2, 1), height  + displacement(3, 1)) * initialTransform);
+            vertices(8, :) = transl(transl(-width / 2  + displacement(1, 1), length / 2 + displacement(2, 1), height  + displacement(3, 1)) * initialTransform);
+            % vertices(1, :) = [width / 2 + initialVector(1, 1) + displacement(1, 1), length / 2 + initialVector(2, 1) + displacement(2, 1), 0 + initialVector(3, 1) + displacement(3, 1)];
+            % vertices(2, :) = [width / 2 + initialVector(1, 1) + displacement(1, 1), -length / 2 + initialVector(2, 1) + displacement(2, 1), 0 + initialVector(3, 1) + displacement(3, 1)];
+            % vertices(3, :) = [-width / 2 + initialVector(1, 1) + displacement(1, 1), -length / 2 + initialVector(2, 1) + displacement(2, 1), 0 + initialVector(3, 1) + displacement(3, 1)];
+            % vertices(4, :) = [-width / 2 + initialVector(1, 1) + displacement(1, 1), length / 2 + initialVector(2, 1) + displacement(2, 1), 0 + initialVector(3, 1) + displacement(3, 1)];
+            % vertices(5, :) = [width / 2 + initialVector(1, 1) + displacement(1, 1), length / 2 + initialVector(2, 1) + displacement(2, 1), height + initialVector(3, 1) + displacement(3, 1)];
+            % vertices(6, :) = [width / 2 + initialVector(1, 1) + displacement(1, 1), -length / 2 + initialVector(2, 1) + displacement(2, 1), height + initialVector(3, 1) + displacement(3, 1)];
+            % vertices(7, :) = [-width / 2 + initialVector(1, 1) + displacement(1, 1), -length / 2 + initialVector(2, 1) + displacement(2, 1), height + initialVector(3, 1) + displacement(3, 1)];
+            % vertices(8, :) = [-width / 2 + initialVector(1, 1) + displacement(1, 1), length / 2 + initialVector(2, 1) + displacement(2, 1), height + initialVector(3, 1) + displacement(3, 1)]; 
         end
         
         function faces = getFaces(~)
@@ -64,12 +72,12 @@ classdef Hitbox
             hold off
         end
         
-        function updatePosition(self, goalTransform)
+        function updatedVertices = updatePosition(self, goalTransform)
             for i = 1:8
-                vertices = self.vertices;
-                transformedVertices(i, :) = transl(goalTransform * transl(vertices(i, :)))';
+                vertexVector = self.vertices(i, :);
+                transformedVertices(i, :) = transl(goalTransform * transl(vertexVector))';
             end
-            self.vertices = transformedVertices;
+            updatedVertices = transformedVertices;
         end
     end
     

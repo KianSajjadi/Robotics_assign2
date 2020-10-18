@@ -7,7 +7,7 @@ function robotHitboxList = getRobotHitboxList(robot)
     displacement1 = [0, 0, 0]';
     robotHitboxList{1, 1} = Hitbox(0.150, 0.095, 0.095, displacement1, fkineJoints{1, 1});
         %joint 1
-    displacement2 = [0, 0, -0.11]';
+    displacement2 = [0, 0, -0.25]';
     robotHitboxList{2, 1} = Hitbox(0.160, 0.095, 0.125, displacement2, fkineJoints{2, 1});
         %joint 2
     displacement3 = [0, 0.04, -0.05]';

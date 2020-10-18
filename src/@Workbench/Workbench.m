@@ -48,7 +48,7 @@ classdef Workbench < handle
         end
         %% processData
         function renderDataList = processData(self, robot, preCalcData, robotHitboxList)
-            numSteps = 150;
+            numSteps = 50;
             sizeMtx = size(preCalcData);
             n = sizeMtx(1);
             renderDataList = cell(n - 1, 5);
@@ -77,12 +77,22 @@ classdef Workbench < handle
                         qMatrix = robot.getJointQMatrix(currentJoints, goalTransform, numSteps);
                         renderDataList(i - 1, :) = {qMatrix, preCalcData{i, 3:6}};
                 end
-                for j = 1:8
+                
+                for j = 1 : numSteps
                     fkineJoints = robot.getFkineJoints(qMatrix(j, :));
-                    hitbox = robotHitboxList{j, 1};
-                    hitbox.updatePosition(fkineJoints{j, 1});
+                    hitbox = robotHitboxList{2, 1};
+                    hitbox.vertices = hitbox.updatePosition(fkineJoints{2, 1});
+                    hitbox.plotEdges();
+                    %for k = 1:8
+                        %hitbox = robotHitboxList{j, 1};
+                        %hitbox.vertices = hitbox.updatePosition(fkineJoints{j, 1});
+                        %hitbox.plotEdges();
+                    %end
+
                 end
+
             end
+
         end
         
     end
