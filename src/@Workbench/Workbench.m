@@ -9,9 +9,13 @@ classdef Workbench < handle
     %% Methods
     methods
         function self = Workbench(robot)
+            self.robot = robot;
             self.robotHitboxList = robot.getRobotHitboxList();
-            self.renderDataList = self.getRenderDataList(robot);
-            self.animateScene(robot, self.renderDataList);
+            self.renderDataList = self.getRenderDataList(self.robot);
+        end
+
+        function runAnimation(self)
+           self.animateScene(self.robot, self.renderDataList); 
         end
         %% getRenderDataList
         function renderDataList = getRenderDataList(self, robot)
@@ -51,7 +55,7 @@ classdef Workbench < handle
             numSteps = 50;
             sizeMtx = size(preCalcData);
             n = sizeMtx(1);
-            renderDataList = cell(n - 1, 5);
+            renderDataList = cell(n - 1, 6);
             for i = 2:n
                 switch preCalcData{i, 2}
                     case 'cartesian'
@@ -64,7 +68,7 @@ classdef Workbench < handle
                             currentJoints = qMatrix(numSteps, :);
                         end
                         qMatrix = robot.getCartesianQMatrix(currentTransform, currentJoints, goalTransform, numSteps);
-                        renderDataList(i - 1, :) = {qMatrix, preCalcData{i, 3:6}};
+                        renderDataList(i - 1, :) = {qMatrix, preCalcData{i, 3:6}, NaN};
                         
                     case 'joint'
                         if i == 2
@@ -75,22 +79,19 @@ classdef Workbench < handle
                         end
                         goalTransform = preCalcData{i, 1};
                         qMatrix = robot.getJointQMatrix(currentJoints, goalTransform, numSteps);
-                        renderDataList(i - 1, :) = {qMatrix, preCalcData{i, 3:6}};
+                        renderDataList(i - 1, :) = {qMatrix, preCalcData{i, 3:6}, NaN};
                 end
                 
+                robotHitboxQMatrixPositionList = cell(numSteps, 1); 
                 for j = 1 : numSteps
                     fkineJoints = robot.getFkineJoints(qMatrix(j, :));
-                    hitbox = robotHitboxList{2, 1};
-                    hitbox.vertices = hitbox.updatePosition(fkineJoints{2, 1});
-                    hitbox.plotEdges();
-                    %for k = 1:8
-                        %hitbox = robotHitboxList{j, 1};
-                        %hitbox.vertices = hitbox.updatePosition(fkineJoints{j, 1});
-                        %hitbox.plotEdges();
-                    %end
-
+                    for k = 1 : 8
+                        hitbox = robotHitboxList{k, 1};
+                        hitbox.vertices = hitbox.updatePosition(fkineJoints{k, 1});
+                        robotHitboxQMatrixPositionList{j, k} = hitbox;
+                    end
                 end
-
+                renderDataList{i - 1 , 6} = robotHitboxQMatrixPositionList;  
             end
 
         end

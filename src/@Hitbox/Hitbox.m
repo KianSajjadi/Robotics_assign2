@@ -56,7 +56,7 @@ classdef Hitbox
             end 
         end
         
-        function plotEdges(self)
+        function edgePlot = plotEdges(self)
             edges = [
                 1, 2; 1, 4; 1, 3; 3, 4; 3, 2;
                 5, 6; 5, 8; 5, 7; 7, 8; 7, 6;
@@ -65,9 +65,9 @@ classdef Hitbox
                 ];
             hold on
             for i = 1 : size(edges, 1)
-                plot3([self.vertices(edges(i, 1), 1), self.vertices(edges(i, 2), 1)],...
+                edgePlot(i) = plot3([self.vertices(edges(i, 1), 1), self.vertices(edges(i, 2), 1)],...
                 [self.vertices(edges(i, 1), 2), self.vertices(edges(i, 2), 2)],...
-                [self.vertices(edges(i,1) , 3), self.vertices(edges(i, 2), 3)], 'k')
+                [self.vertices(edges(i,1) , 3), self.vertices(edges(i, 2), 3)], 'k');
             end
             hold off
         end
