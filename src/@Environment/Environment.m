@@ -1,4 +1,3 @@
-
 classdef Environment 
     
     properties
@@ -6,7 +5,7 @@ classdef Environment
         workshopFloor;
         cautionPoster;
         table;
-%         tray;
+        tray;
 %         cr10;
         redLaserXList;
         redLaserYList;
@@ -23,13 +22,13 @@ classdef Environment
            self.redLaserXList{2, 1} = self.getRedLaserX(-1.6, 0.1, 1.6, -1, -1, 1.7, -0.8);           
            self.redLaserYList{1, 1} = self.getRedLaserY(-1, 0.1, 1, 1.6, 1.6, 1.7, -0.8);
            self.redLaserYList{2, 1} = self.getRedLaserY(-1, 0.1, 1, -1.6, -1.6, 1.7, -0.8);
-           self.table = Prop(transl(0, 0, 0), "table");
+           self.table = Prop(transl(0, 0, 0), 'table');
            self.table.initProp;
-%            self.tray = Prop(transl(0, 0, 0), "tray");
-%            self.tray.initProp;
-%            self.cr10 = Prop(transl(0, 0, 0), "cr-10");
+           self.tray = Prop(transl(0.5, -0.25, 0), 'tray');
+           self.tray.initProp;
+%            self.cr10 = Prop(transl(0, 0, 0), 'cr-10');
 %            self.cr10.initProp;
-           
+          
         end
         
         % Concrete Wall
