@@ -10,7 +10,6 @@ classdef Hitbox
         function self = Hitbox(height, width, length, displacement, initialTransform)
             self.vertices = self.getVertices(height, width, length, displacement, initialTransform);
             self.faces = self.getFaces();
-           % self.faceNormals = self.getFaceNormals(self.vertices, self.faces);
         end
         
         function vertices = getVertices(~, height, width, length, displacement, initialTransform)
@@ -46,12 +45,12 @@ classdef Hitbox
             ];
         end
         
-        function faceNormals = getFaceNormals(~, vertices, faces)               
-            faceNormals = zeros(size(face, 1), 3);
-            for faceIndex = 1 : size(face,1)
-                v1 = vertices(faces(faceIndex, 1)', :);
-                v2 = vertices(faces(faceIndex, 2)', :);
-                v3 = vertices(faces(faceIndex, 3)', :);
+        function faceNormals = getFaceNormals(self)               
+            faceNormals = zeros(size(self.faces, 1), 3);
+            for faceIndex = 1 : size(self.faces, 1)
+                v1 = self.vertices(self.faces(faceIndex, 1)', :);
+                v2 = self.vertices(self.faces(faceIndex, 2)', :);
+                v3 = self.vertices(self.faces(faceIndex, 3)', :);
                 faceNormals(faceIndex, :) = unit(cross(v2 - v1, v3 - v1));
             end 
         end

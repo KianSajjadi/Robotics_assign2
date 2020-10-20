@@ -13,6 +13,7 @@ classdef xArm7 < handle
     %% Methods
     methods
         function self = xArm7(base)
+            self.stopState = 0;
             if nargin < 1
                base = transl(0, 0, 0);
             end
