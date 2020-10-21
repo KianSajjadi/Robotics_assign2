@@ -4,7 +4,6 @@ classdef xArm7 < handle
         model;
         workspace = [-2 2 -2 2 -0.8 2]; 
         base;
-        stopState;
         isHolding;
         heldProp;
         hitBoxes;
@@ -13,7 +12,6 @@ classdef xArm7 < handle
     %% Methods
     methods
         function self = xArm7(base)
-            self.stopState = 0;
             if nargin < 1
                base = transl(0, 0, 0);
             end

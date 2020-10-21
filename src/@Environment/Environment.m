@@ -27,8 +27,8 @@ classdef Environment
             self.table.initProp;
             self.tray = Prop(transl(0.5, -0.25, 0), 'tray');
             self.tray.initProp;
-            %self.cr10 = Prop((transl(0, 0, 0) * trotz(pi)), 'cr-10');
-            %self.cr10.initProp;
+            self.cr10 = Prop(transl(0.6, 0, 0) * trotz(-pi/2), 'cr-10');
+            self.cr10.initProp;
           
         end
         
