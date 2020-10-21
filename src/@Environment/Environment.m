@@ -6,7 +6,7 @@ classdef Environment
         cautionPoster;
         table;
         tray;
-%         cr10;
+        cr10;
         redLaserXList;
         redLaserYList;
         
@@ -14,20 +14,21 @@ classdef Environment
     
     methods
         function self = Environment()
-           self.concreteWalls{1, 1} = self.getConcreteWall(-2, 2, -2, 2, -2, -2, -2, -2, 2, 2, -0.8, -0.8);
-           self.concreteWalls{2, 1} = self.getConcreteWall(-2, -2, -2, -2, -2, 2, -2, 2, 2, 2, -0.8, -0.8);
-           self.workshopFloor = self.getWorkshopFloor(2, -2, 2, -2, 2, 2, -2, -2, -0.8, -0.8, -0.8, -0.8);
-           self.cautionPoster = self.getCautionPoster(-2, -2, -2, -2, 1, 2, 1, 2, 1, 1, 0.5, 0.5);           
-           self.redLaserXList{1, 1} = self.getRedLaserX(-1.6, 0.1, 1.6, 1, 1, 1.7, -0.8);
-           self.redLaserXList{2, 1} = self.getRedLaserX(-1.6, 0.1, 1.6, -1, -1, 1.7, -0.8);           
-           self.redLaserYList{1, 1} = self.getRedLaserY(-1, 0.1, 1, 1.6, 1.6, 1.7, -0.8);
-           self.redLaserYList{2, 1} = self.getRedLaserY(-1, 0.1, 1, -1.6, -1.6, 1.7, -0.8);
-           self.table = Prop(transl(0, 0, 0), 'table');
-           self.table.initProp;
-           self.tray = Prop(transl(0.5, -0.25, 0), 'tray');
-           self.tray.initProp;
-%            self.cr10 = Prop(transl(0, 0, 0), 'cr-10');
-%            self.cr10.initProp;
+            self.concreteWalls{1, 1} = self.getConcreteWall(-2, 2, -2, 2, -2, -2, -2, -2, 2, 2, -0.8, -0.8);
+            self.concreteWalls{2, 1} = self.getConcreteWall(-2, -2, -2, -2, -2, 2, -2, 2, 2, 2, -0.8, -0.8);
+            self.workshopFloor = self.getWorkshopFloor(2, -2, 2, -2, 2, 2, -2, -2, -0.8, -0.8, -0.8, -0.8);
+            self.cautionPoster = self.getCautionPoster(-2, -2, -2, -2, 1, 2, 1, 2, 1, 1, 0.5, 0.5);           
+            self.redLaserXList{1, 1} = self.getRedLaserX(-1.6, 0.1, 1.6, 1, 1, 1.7, -0.8);
+            self.redLaserXList{2, 1} = self.getRedLaserX(-1.6, 0.1, 1.6, -1, -1, 1.7, -0.8);           
+            self.redLaserYList{1, 1} = self.getRedLaserY(-1, 0.1, 1, 1.6, 1.6, 1.7, -0.8);
+            self.redLaserYList{2, 1} = self.getRedLaserY(-1, 0.1, 1, -1.6, -1.6, 1.7, -0.8);
+            self.table = Prop(transl(0, 0, 0), 'table');
+            table.prop_h.FaceColor = [198 137 88]/255;
+            self.table.initProp;
+            self.tray = Prop(transl(0.5, -0.25, 0), 'tray');
+            self.tray.initProp;
+            %self.cr10 = Prop((transl(0, 0, 0) * trotz(pi)), 'cr-10');
+            %self.cr10.initProp;
           
         end
         

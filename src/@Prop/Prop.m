@@ -30,8 +30,11 @@ classdef Prop < handle
         end
         
         function initProp(self)
+            data = self.data;
             hold on
-			self.prop_h = trisurf(self.faces, self.points(:, 1), self.points(:, 2), self.points(:, 3), "LineStyle", "none");
+            self.prop_h = trisurf(self.faces, self.points(:, 1), self.points(:, 2), self.points(:, 3), "LineStyle", "none");
+            try set(self.prop_h, 'FaceVertexCData', [data.vertex.red, data.vertex.green, data.vertex.green]/255);
+            end
             self.updatePosition(self.positionTransform);
 			hold off
         end
