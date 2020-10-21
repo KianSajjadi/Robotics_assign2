@@ -4,14 +4,17 @@ classdef Workbench < handle
         robot;
         renderDataList;
         robotHitboxList;
+        environment;
     end
     
     %% Methods
     methods
         function self = Workbench(robot)
-            self.robot = robot;
-            self.robotHitboxList = robot.getRobotHitboxList();
-            self.renderDataList = self.getRenderDataList(self.robot);
+            self.environment = Environment;
+            self.renderDataList = self.getRenderDataList(robot);
+            self.animateScene(robot, self.renderDataList);
+            %robotHitboxList = robot.getRobotHitboxList();
+
         end
 
         function runAnimation(self)
